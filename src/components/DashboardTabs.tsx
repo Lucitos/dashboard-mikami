@@ -14,7 +14,7 @@ import { GutBadge } from './GutBadge';
 
 type TabId = 'resumo' | 'matriz-gut' | 'analise' | 'planos';
 
-const TABS: Array<{ id: TabId; label: string; count?: (p: Process[]) => string }> = [
+const TABS: Array<{ id: TabId; label: string }> = [
   { id: 'resumo', label: 'Resumo' },
   { id: 'matriz-gut', label: 'Matriz GUT' },
   { id: 'analise', label: 'Análise Específica' },
@@ -46,18 +46,20 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
 
   return (
     <div>
-      {/* Tab Bar */}
+      {/* Tab Bar — glassmorphism sticky */}
       <div
         style={{
-          background: 'white',
-          borderBottom: '1px solid var(--border)',
+          background: 'rgba(246,244,240,0.85)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(26,23,20,0.07)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
-          boxShadow: '0 1px 6px rgba(26,23,20,0.06)',
+          boxShadow: '0 2px 16px rgba(0,0,0,0.05)',
         }}
       >
-        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px', display: 'flex' }}>
+        <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px', display: 'flex', gap: '4px' }}>
           {TABS.map(tab => (
             <button
               key={tab.id}
@@ -66,14 +68,14 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                 background: 'none',
                 border: 'none',
                 borderBottom: activeTab === tab.id ? '2px solid var(--red)' : '2px solid transparent',
-                padding: '15px 22px',
+                padding: '18px 24px',
                 marginBottom: '-1px',
                 cursor: 'pointer',
                 fontFamily: 'var(--font-outfit, system-ui)',
                 fontSize: '0.875rem',
                 fontWeight: activeTab === tab.id ? 600 : 400,
                 color: activeTab === tab.id ? 'var(--red)' : 'var(--text-muted)',
-                letterSpacing: activeTab === tab.id ? '0.01em' : '0',
+                letterSpacing: '0.01em',
                 transition: 'color 0.18s, border-color 0.18s',
                 whiteSpace: 'nowrap',
               }}
@@ -85,20 +87,20 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
       </div>
 
       {/* Tab Content */}
-      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 24px', minHeight: '60vh' }}>
+      <main style={{ maxWidth: '1280px', margin: '0 auto', padding: '56px 32px', minHeight: '60vh' }}>
 
         {/* ── RESUMO ─────────────────────────────────────── */}
         {activeTab === 'resumo' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '36px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '52px' }}>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '20px' }}>
               <KpiCard label="Processos Mapeados" value={processes.length} sub="processos operacionais" delay={0} />
               <KpiCard label="Pontuação GUT Máxima" value={topProcess.pontuacaoGut ?? '—'} sub={topProcess.nome} accent="var(--red)" delay={80} />
-              <KpiCard label="Com Plano de Ação" value={comPlanos} sub={`de ${processes.length} processos`} accent="var(--gold)" delay={160} />
+              <KpiCard label="Com Plano de Ação" value={comPlanos} sub={`de ${processes.length} processos`} delay={160} />
               <KpiCard label="Total de Atividades" value={totalAtividades} sub="atividades documentadas" delay={240} />
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '24px', alignItems: 'start' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '24px', alignItems: 'start' }}>
               <Card label="Atividades por Processo">
                 <ActivitiesChart processes={processes} />
               </Card>
@@ -107,10 +109,9 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
               </Card>
             </div>
 
-            {/* Top críticos */}
             <div>
               <TabSectionTitle>Top Processos Críticos</TabSectionTitle>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '14px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '20px' }}>
                 {sorted.filter(p => p.pontuacaoGut && p.pontuacaoGut >= 20).slice(0, 6).map((p, i) => (
                   <ProcessCard key={p.slug} process={p} delay={i * 50} />
                 ))}
@@ -121,11 +122,11 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
 
         {/* ── MATRIZ GUT ─────────────────────────────────── */}
         {activeTab === 'matriz-gut' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
 
             <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: '24px', alignItems: 'start' }}>
               <Card label="Gravidade × Urgência (tamanho = Tendência)">
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginBottom: '16px' }}>
+                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginBottom: '20px' }}>
                   <strong style={{ color: 'var(--charcoal)' }}>{pontuados.length}</strong> de {processes.length} processos pontuados
                 </p>
                 <GutMatrixChart processes={processes} />
@@ -137,9 +138,9 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
             </div>
 
             <Card label="Legenda da Classificação GUT">
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
                 {GUT_LEGEND.map(l => (
-                  <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span
                       style={{
                         fontSize: '0.7rem',
@@ -147,7 +148,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                         letterSpacing: '0.07em',
                         color: l.color,
                         background: l.bg,
-                        padding: '3px 9px',
+                        padding: '4px 10px',
                         borderRadius: '4px',
                         border: `1px solid ${l.color}`,
                         fontFamily: 'var(--font-outfit, system-ui)',
@@ -155,7 +156,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                     >
                       {l.label}
                     </span>
-                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)' }}>
+                    <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)' }}>
                       {l.sub}
                     </span>
                   </div>
@@ -168,10 +169,10 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
         {/* ── ANÁLISE ESPECÍFICA ─────────────────────────── */}
         {activeTab === 'analise' && (
           <div>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginBottom: '24px' }}>
+            <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginBottom: '32px', lineHeight: 1.6, textAlign: 'center' }}>
               {processes.length} processos mapeados, ordenados por pontuação GUT — clique para ver análise completa
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(290px, 1fr))', gap: '20px' }}>
               {sorted.map((p, i) => (
                 <ProcessCard key={p.slug} process={p} delay={i * 35} />
               ))}
@@ -181,14 +182,14 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
 
         {/* ── PLANOS DE AÇÃO ─────────────────────────────── */}
         {activeTab === 'planos' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
               <KpiCard label="Total de Ações" value={totalPlanos} sub="planos de ação documentados" accent="var(--red)" delay={0} />
-              <KpiCard label="Processos com Ações" value={comPlanos} sub={`de ${processes.length} processos`} accent="var(--gold)" delay={80} />
+              <KpiCard label="Processos com Ações" value={comPlanos} sub={`de ${processes.length} processos`} delay={80} />
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {processosComPlanos.map((p, idx) => {
                 const info = getGutInfo(p.pontuacaoGut);
                 return (
@@ -197,30 +198,33 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                     className="fade-up"
                     style={{
                       '--td': `${idx * 45}ms`,
-                      background: 'white',
-                      border: '1px solid var(--border)',
+                      background: 'var(--glass-bg)',
+                      backdropFilter: 'blur(20px)',
+                      WebkitBackdropFilter: 'blur(20px)',
+                      border: '1px solid var(--glass-border)',
                       borderLeft: `4px solid ${info.color}`,
-                      borderRadius: '10px',
+                      borderRadius: '14px',
                       overflow: 'hidden',
+                      boxShadow: 'var(--glass-shadow)',
                     } as React.CSSProperties}
                   >
                     {/* Process header */}
                     <div
                       style={{
-                        padding: '14px 20px',
-                        borderBottom: '1px solid var(--border)',
+                        padding: '18px 24px',
+                        borderBottom: '1px solid rgba(26,23,20,0.06)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
                         gap: '12px',
-                        background: 'rgba(0,0,0,0.015)',
+                        background: 'rgba(255,255,255,0.4)',
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
                         <span
                           style={{
                             fontFamily: 'var(--font-cormorant, Georgia, serif)',
-                            fontSize: '1.05rem',
+                            fontSize: '1.1rem',
                             fontWeight: 700,
                             color: info.color,
                             minWidth: '28px',
@@ -233,7 +237,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                             <h3
                               style={{
                                 fontFamily: 'var(--font-cormorant, Georgia, serif)',
-                                fontSize: '1.15rem',
+                                fontSize: '1.2rem',
                                 fontWeight: 600,
                                 color: 'var(--charcoal)',
                                 lineHeight: 1.2,
@@ -242,7 +246,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                               {p.nome}
                             </h3>
                           </Link>
-                          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginTop: '2px' }}>
+                          <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', fontFamily: 'var(--font-outfit, system-ui)', marginTop: '3px' }}>
                             {p.consultor} · {p.cargoExecutor}
                           </p>
                         </div>
@@ -251,17 +255,17 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                     </div>
 
                     {/* Action items */}
-                    <div style={{ padding: '16px 20px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <div style={{ padding: '20px 24px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                         {p.planosDeAcao.map((plano, i) => (
-                          <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                          <div key={i} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                             <span
                               style={{
                                 flexShrink: 0,
-                                width: '22px',
-                                height: '22px',
+                                width: '24px',
+                                height: '24px',
                                 borderRadius: '50%',
-                                background: 'var(--gold)',
+                                background: 'var(--red)',
                                 color: 'white',
                                 fontSize: '0.62rem',
                                 fontWeight: 700,
@@ -274,7 +278,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                             >
                               {i + 1}
                             </span>
-                            <p style={{ fontSize: '0.875rem', color: 'var(--charcoal)', lineHeight: 1.55, fontFamily: 'var(--font-outfit, system-ui)' }}>
+                            <p style={{ fontSize: '0.9rem', color: 'var(--charcoal)', lineHeight: 1.6, fontFamily: 'var(--font-outfit, system-ui)' }}>
                               {plano}
                             </p>
                           </div>
@@ -295,15 +299,25 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
 
 function Card({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '10px', padding: '22px 24px' }}>
+    <div
+      style={{
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        border: '1px solid var(--glass-border)',
+        borderRadius: '14px',
+        padding: '28px 30px',
+        boxShadow: 'var(--glass-shadow)',
+      }}
+    >
       <p
         style={{
           fontSize: '0.7rem',
           fontWeight: 600,
-          letterSpacing: '0.1em',
+          letterSpacing: '0.12em',
           textTransform: 'uppercase',
           color: 'var(--text-muted)',
-          marginBottom: '16px',
+          marginBottom: '20px',
           fontFamily: 'var(--font-outfit, system-ui)',
         }}
       >
@@ -316,11 +330,11 @@ function Card({ label, children }: { label: string; children: React.ReactNode })
 
 function TabSectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ marginBottom: '18px' }}>
-      <h2 className="display" style={{ fontSize: '1.5rem', color: 'var(--charcoal)', marginBottom: '6px' }}>
+    <div style={{ marginBottom: '24px' }}>
+      <h2 className="display" style={{ fontSize: '1.65rem', color: 'var(--charcoal)', marginBottom: '10px' }}>
         {children}
       </h2>
-      <div style={{ height: '2px', width: '40px', background: 'linear-gradient(to right, var(--red), var(--gold))' }} />
+      <div style={{ height: '2px', width: '36px', background: 'var(--red)', borderRadius: '1px' }} />
     </div>
   );
 }

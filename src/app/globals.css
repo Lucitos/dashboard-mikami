@@ -3,16 +3,24 @@
 :root {
   --red: #D71921;
   --red-dark: #A8141A;
-  --red-muted: rgba(215,25,33,0.08);
+  --red-muted: rgba(215,25,33,0.06);
+
+  /* Keep gold for pages not being redesigned */
   --gold: #AA7C4A;
   --gold-light: #C49A6A;
   --gold-muted: rgba(170,124,74,0.10);
+
   --charcoal: #1A1714;
-  --warm: #FFFFFF;
-  --warm-dark: #EDE9E2;
+  --warm: #EDE8E1;
+  --warm-dark: #DDD7CE;
   --surface: #FFFFFF;
-  --border: #E2DDD6;
+  --border: rgba(26,23,20,0.09);
   --text-muted: #7A6F65;
+
+  /* Glassmorphism tokens */
+  --glass-bg: rgba(255,255,255,0.82);
+  --glass-border: rgba(255,255,255,0.95);
+  --glass-shadow: 0 4px 32px rgba(0,0,0,0.10), 0 1px 6px rgba(0,0,0,0.06);
 
   --gut-critical: #D71921;
   --gut-critical-bg: rgba(215,25,33,0.07);
@@ -44,7 +52,7 @@ h1,h2,h3,.display {
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: var(--warm-dark); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: rgba(26,23,20,0.15); border-radius: 3px; }
 
 @keyframes fillBar {
   from { width: 0 }
@@ -57,11 +65,11 @@ h1,h2,h3,.display {
 }
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up {
-  animation: fadeUp 0.45s ease forwards;
+  animation: fadeUp 0.5s ease forwards;
   animation-delay: var(--td, 0ms);
   opacity: 0;
 }

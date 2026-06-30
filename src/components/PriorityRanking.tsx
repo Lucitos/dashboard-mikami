@@ -12,7 +12,7 @@ export function PriorityRanking({ processes }: PriorityRankingProps) {
   );
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
       {ranked.map((p, i) => {
         const info = getGutInfo(p.pontuacaoGut);
         const pct = p.pontuacaoGut ? Math.max(4, (p.pontuacaoGut / MAX_SCORE) * 100) : 3;
@@ -27,20 +27,22 @@ export function PriorityRanking({ processes }: PriorityRankingProps) {
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: '28px 1fr auto',
+                gridTemplateColumns: '32px 1fr auto',
                 alignItems: 'center',
-                gap: '10px',
-                padding: '10px 12px',
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderLeft: `4px solid ${info.color}`,
-                borderRadius: '6px',
+                gap: '12px',
+                padding: '12px 16px',
+                background: 'var(--glass-bg)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid var(--glass-border)',
+                borderLeft: `3px solid ${info.color}`,
+                borderRadius: '10px',
+                boxShadow: '0 1px 6px rgba(0,0,0,0.04)',
                 transition: 'box-shadow 0.15s, transform 0.15s',
                 cursor: 'pointer',
-              }}
+              } as React.CSSProperties}
               className="process-rank-row"
             >
-              {/* rank number */}
               <span
                 style={{
                   fontFamily: 'var(--font-cormorant, Georgia, serif)',
@@ -53,14 +55,13 @@ export function PriorityRanking({ processes }: PriorityRankingProps) {
                 {i + 1}
               </span>
 
-              {/* bar + name */}
               <div style={{ overflow: 'hidden' }}>
                 <p
                   style={{
                     fontSize: '0.85rem',
                     fontWeight: 500,
                     color: 'var(--charcoal)',
-                    marginBottom: '5px',
+                    marginBottom: '6px',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
@@ -69,7 +70,7 @@ export function PriorityRanking({ processes }: PriorityRankingProps) {
                 >
                   {p.nome}
                 </p>
-                <div style={{ height: '5px', background: 'var(--warm-dark)', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{ height: '4px', background: 'rgba(26,23,20,0.08)', borderRadius: '2px', overflow: 'hidden' }}>
                   <div
                     className="bar-animated"
                     style={{
@@ -77,14 +78,13 @@ export function PriorityRanking({ processes }: PriorityRankingProps) {
                       '--td': `${delay}ms`,
                       height: '100%',
                       background: info.color,
-                      borderRadius: '3px',
+                      borderRadius: '2px',
                       opacity: p.pontuacaoGut ? 1 : 0.3,
                     } as React.CSSProperties}
                   />
                 </div>
               </div>
 
-              {/* score badge */}
               <div style={{ textAlign: 'right', flexShrink: 0 }}>
                 <span
                   style={{

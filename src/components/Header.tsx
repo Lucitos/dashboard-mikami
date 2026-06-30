@@ -9,32 +9,26 @@ interface HeaderProps {
 export function Header({ subtitle, back }: HeaderProps) {
   return (
     <header style={{ background: 'var(--red)' }}>
-      <div
-        style={{
-          height: '3px',
-          background: 'linear-gradient(to right, var(--gold) 0%, rgba(255,255,255,0.35) 60%, transparent 100%)',
-        }}
-      />
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-6">
-        <Link href="/" className="flex items-center gap-4 no-underline group">
-          <div className="relative" style={{ width: 120, height: 36 }}>
+      <div className="max-w-7xl mx-auto px-8 py-5 flex items-center justify-between gap-6">
+        <Link href="/" className="flex items-center gap-5 no-underline group">
+          <div className="relative" style={{ width: 130, height: 40 }}>
             <Image
               src="/logo-mikami.png"
               alt="Mikami"
               fill
-              sizes="120px"
+              sizes="130px"
               style={{ objectFit: 'contain', objectPosition: 'left center' }}
               priority
             />
           </div>
           {subtitle && (
             <>
-              <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '1.25rem', fontWeight: 300 }}>
+              <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '1.2rem', fontWeight: 200 }}>
                 |
               </span>
               <span
                 className="display"
-                style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.95rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}
+                style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.88rem', letterSpacing: '0.08em', textTransform: 'uppercase' }}
               >
                 {subtitle}
               </span>
@@ -46,7 +40,7 @@ export function Header({ subtitle, back }: HeaderProps) {
           <Link
             href={back.href}
             className="flex items-center gap-2 text-sm no-underline transition-opacity hover:opacity-80"
-            style={{ color: 'rgba(255,255,255,0.75)' }}
+            style={{ color: 'rgba(255,255,255,0.7)' }}
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
