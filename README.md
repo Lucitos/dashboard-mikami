@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mikami — Dashboard de Análise Crítica de Processos
 
-## Getting Started
+Dashboard executivo privado que prioriza os 15 processos operacionais da Mikami via Matriz GUT (Gravidade × Urgência × Tendência), com drill-down por processo, riscos, gargalos e planos de ação. Acesso protegido por senha.
 
-First, run the development server:
+**Stack:** Next.js 16 (App Router) + TypeScript + Tailwind CSS + Recharts  
+**Hospedagem:** Vercel free tier
 
+---
+
+## Deploy no Vercel
+
+### 1. Suba o código para um repositório GitHub
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git init
+git add .
+git commit -m "feat: mikami dashboard"
+git remote add origin https://github.com/SEU_USUARIO/mikami-dashboard.git
+git push -u origin main
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Importe no Vercel
+1. Acesse vercel.com/new e importe o repositório
+2. Framework Preset: Next.js (auto-detectado)
+3. Em Environment Variables, adicione:
+   - SITE_PASSWORD = a senha para acessar o dashboard (ex: mikami2026)
+   - SESSION_SECRET = string aleatória longa (gere com: openssl rand -hex 32)
+4. Clique em Deploy
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Desenvolvimento local
 
-## Learn More
+```bash
+cp .env.example .env.local
+# edite .env.local com sua senha e segredo
 
-To learn more about Next.js, take a look at the following resources:
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Acesse http://localhost:3000 — você será redirecionado para /login.
+Senha padrão de desenvolvimento: mikami2026
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Estrutura
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/
+  app/
+    page.tsx                     # Dashboard principal
+    processos/[slug]/page.tsx    # Detalhe do processo
+    login/page.tsx               # Tela de login
+    api/login/route.ts           # Autenticação
+  components/                    # Header, GutBadge, KpiCard, PriorityRanking, ProcessCard
+    charts/                      # GutMatrixChart, ActivitiesChart, ConsultorDonut
+  data/processes.ts              # 15 processos com GUT, riscos, gargalos, planos
+  lib/gut.ts                     # Helpers de nível/cor GUT
+  lib/session.ts                 # HMAC para cookie de sessão
+proxy.ts                         # Proteção de rotas (Next.js 16)
+public/
+  logo-mikami.png
+  pops/*.docx                    # POPs originais para download
+```
