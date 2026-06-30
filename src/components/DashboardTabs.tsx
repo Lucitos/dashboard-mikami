@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Process } from '@/data/processes';
 import { KpiCard } from './KpiCard';
@@ -36,27 +36,33 @@ interface DashboardTabsProps {
 export function DashboardTabs({ processes }: DashboardTabsProps) {
   const [activeTab, setActiveTab] = useState<TabId>('resumo');
 
-  const sorted = [...processes].sort((a, b) => (b.pontuacaoGut ?? -1) - (a.pontuacaoGut ?? -1));
-  const pontuados = processes.filter(p => p.pontuacaoGut !== null);
-  const totalAtividades = processes.reduce((s, p) => s + p.numAtividades, 0);
-  const topProcess = sorted[0];
-  const comPlanos = processes.filter(p => p.planosDeAcao.length > 0).length;
-  const totalPlanos = processes.reduce((s, p) => s + p.planosDeAcao.length, 0);
-  const processosComPlanos = sorted.filter(p => p.planosDeAcao.length > 0);
+  const { sorted, pontuados, totalAtividades, topProcess, comPlanos, totalPlanos, processosComPlanos } = useMemo(() => {
+    const sorted = [...processes].sort((a, b) => (b.pontuacaoGut ?? -1) - (a.pontuacaoGut ?? -1));
+    return {
+      sorted,
+      pontuados: processes.filter(p => p.pontuacaoGut !== null),
+      totalAtividades: processes.reduce((s, p) => s + p.numAtividades, 0),
+      topProcess: sorted[0],
+      comPlanos: processes.filter(p => p.planosDeAcao.length > 0).length,
+      totalPlanos: processes.reduce((s, p) => s + p.planosDeAcao.length, 0),
+      processosComPlanos: sorted.filter(p => p.planosDeAcao.length > 0),
+    };
+  }, [processes]);
 
   return (
     <div>
       {/* Tab Bar — glassmorphism sticky */}
       <div
         style={{
-          background: 'rgba(246,244,240,0.85)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: 'rgba(246,244,240,0.95)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
           borderBottom: '1px solid rgba(26,23,20,0.07)',
           position: 'sticky',
           top: 0,
           zIndex: 10,
           boxShadow: '0 2px 16px rgba(0,0,0,0.05)',
+          willChange: 'transform',
         }}
       >
         <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 32px', display: 'flex', gap: '4px' }}>
@@ -198,9 +204,7 @@ export function DashboardTabs({ processes }: DashboardTabsProps) {
                     className="fade-up"
                     style={{
                       '--td': `${idx * 45}ms`,
-                      background: 'var(--glass-bg)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
+                      background: 'white',
                       border: '1px solid var(--glass-border)',
                       borderLeft: `4px solid ${info.color}`,
                       borderRadius: '14px',
@@ -301,9 +305,7 @@ function Card({ label, children }: { label: string; children: React.ReactNode })
   return (
     <div
       style={{
-        background: 'var(--glass-bg)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        background: 'white',
         border: '1px solid var(--glass-border)',
         borderRadius: '14px',
         padding: '28px 30px',

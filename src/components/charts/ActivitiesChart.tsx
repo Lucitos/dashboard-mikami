@@ -43,13 +43,16 @@ function CustomTooltip({ active, payload }: CustomTooltipProps) {
 export function ActivitiesChart({ processes }: ActivitiesChartProps) {
   const data = [...processes]
     .sort((a, b) => b.numAtividades - a.numAtividades)
-    .map(p => ({
-      nome: p.nome.length > 22 ? p.nome.substring(0, 20) + '…' : p.nome,
-      nomeCompleto: p.nome,
-      atividades: p.numAtividades,
-      color: getGutInfo(p.pontuacaoGut).color,
-      nivel: getGutInfo(p.pontuacaoGut).label,
-    }));
+    .map(p => {
+      const gut = getGutInfo(p.pontuacaoGut);
+      return {
+        nome: p.nome.length > 22 ? p.nome.substring(0, 20) + '…' : p.nome,
+        nomeCompleto: p.nome,
+        atividades: p.numAtividades,
+        color: gut.color,
+        nivel: gut.label,
+      };
+    });
 
   return (
     <ResponsiveContainer width="100%" height={380}>

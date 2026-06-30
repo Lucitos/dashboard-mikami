@@ -11,19 +11,19 @@ export default function DashboardPage() {
     <div style={{ minHeight: '100vh', background: 'var(--warm)', position: 'relative' }}>
       {/* Decorative background blobs for glassmorphism depth */}
       <div style={{
-        position: 'fixed', top: '-10%', right: '-5%',
+        position: 'absolute', top: '-10%', right: '-5%',
         width: '750px', height: '750px', borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(215,25,33,0.13) 0%, transparent 60%)',
         pointerEvents: 'none', zIndex: 0,
       }} />
       <div style={{
-        position: 'fixed', bottom: '-15%', left: '-8%',
+        position: 'absolute', bottom: '-15%', left: '-8%',
         width: '650px', height: '650px', borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(215,25,33,0.09) 0%, transparent 60%)',
         pointerEvents: 'none', zIndex: 0,
       }} />
       <div style={{
-        position: 'fixed', top: '35%', left: '25%',
+        position: 'absolute', top: '35%', left: '25%',
         width: '500px', height: '500px', borderRadius: '50%',
         background: 'radial-gradient(circle, rgba(170,124,74,0.07) 0%, transparent 60%)',
         pointerEvents: 'none', zIndex: 0,

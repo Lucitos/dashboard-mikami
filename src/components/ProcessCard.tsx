@@ -17,9 +17,7 @@ export function ProcessCard({ process: p, delay = 0 }: ProcessCardProps) {
         className="process-card fade-up"
         style={{
           '--td': `${delay}ms`,
-          background: 'var(--glass-bg)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: 'white',
           border: '1px solid var(--glass-border)',
           borderTop: `3px solid ${info.color}`,
           borderRadius: '14px',

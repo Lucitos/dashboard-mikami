@@ -12,9 +12,7 @@ export function KpiCard({ label, value, sub, accent, delay = 0 }: KpiCardProps) 
       className="fade-up"
       style={{
         '--td': `${delay}ms`,
-        background: 'var(--glass-bg)',
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
+        background: 'white',
         border: '1px solid var(--glass-border)',
         borderTop: `3px solid ${accent || 'var(--red)'}`,
         borderRadius: '14px',
